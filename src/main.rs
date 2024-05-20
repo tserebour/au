@@ -22,14 +22,34 @@ fn main() {
 
             //upgrades if there is an upgrade flag
 
-            apt_upgrade();
+            if flag == "-u"{
+                apt_upgrade();
+            }
             
 
-            if flag.len() > 0 {
+            match package_name{
+                //checks if there is a package to be installed
 
-                std::process::exit(0);
+                Some(p) => {
+                    //if there is a package to be installed,
 
-            }
+                    if p.len() == 0{
+                        //if there is no package to be installed, it closes the process
+                        println!("Upgrade done, No package to be installed");
+                        std::process::exit(1);
+                    }
+
+                },
+                None => {
+                    //if there is no package to be installed, it closes the process
+                    println!("Upgrade done, No package to be installed");
+
+                    std::process::exit(1);
+                }
+
+
+
+             }
 
         },
 
@@ -125,6 +145,8 @@ fn apt_update(){
         .wait_with_output()
         .expect("failed to wait for update");
 
+    println!("Done apt Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
 }
 
 fn install_package(package_name: &str){
@@ -136,6 +158,9 @@ fn install_package(package_name: &str){
         .expect("apt command failed to start")
         .wait_with_output()
         .expect("failed to wait for update");
+
+        println!("Done installing package >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
 }
 
 fn apt_upgrade(){
@@ -146,4 +171,6 @@ fn apt_upgrade(){
         .expect("apt command failed to start")
         .wait_with_output()
         .expect("failed to wait for update");
+    println!("Done apt Upgrade >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
 }
